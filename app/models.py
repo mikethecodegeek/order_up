@@ -4,15 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
-order_items = db.Table(
-    'order_items',
-    db.Model.metadata,
-    db.Column('menu_item_id', db.Integer, db.ForeignKey(
-        'menu_items.id'), primary_key=True),
-    db.Column('order_detail_id', db.Integer, db.ForeignKey(
-        'order_details.id'), primary_key=True)
-)
-
 
 class Employee(db.Model, UserMixin):
     __tablename__ = 'employees'
@@ -83,6 +74,7 @@ class Order(db.Model):
 
     employee = db.relationship('Employee')
     table = db.relationship('Table')
+    detail = db.relationship('OrderDetail')
 
 
 class OrderDetail(db.Model):
@@ -95,4 +87,4 @@ class OrderDetail(db.Model):
         'menu_items.id'), nullable=False)
 
     order = db.relationship('Order')
-    menu_item = db.relationship('MenuItem')
+    menu_items = db.relationship('MenuItem')
